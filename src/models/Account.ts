@@ -1,25 +1,47 @@
 import { Transaction } from "./Transaction";
 import { Credit } from "./Credit";
 import { CreditCard } from "./CreditCard";
-import { Customer } from "./Customer";
+import { CheckingAccount } from "./CheckingAccount";
+import { SavingsAccount } from "./SavingsAccount";
 
-export abstract class Account {
-    id: string;
-    accountType: string;
-    accountNumber: string;
-    balance: number;
-    transactions: Transaction[];
-    credits?: Credit[];
-    creditCards?: CreditCard[];
+export interface AccountData {
+    getId(): number;
+    getAccountNumber(): string;
+    getBalance(): number;
+    getTransactions(): Transaction[];
+    getCredits?(): Credit[];
+    getCreditCards?(): CreditCard[];
+}
 
-    constructor(id: string, accountType: string, accountNumber: string, balance: number) {
-        this.id = id;
-        this.accountType = accountType;
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-        this.transactions = [];
-        this.credits = [];
-        this.creditCards = [];
+export abstract class Account implements AccountData {
+    private _id: number;
+    private _accountNumber: string;
+    private _balance: number;
+    private _transactions: Transaction[];
+    protected _credits?: Credit[];
+    protected _creditCards?: CreditCard[];
+
+    constructor(id: number, accountNumber: string, balance: number) {
+        this._id = id;
+        this._accountNumber = accountNumber;
+        this._balance = balance;
+        this._transactions = [];
+    }
+
+    getId(): number {
+        return this._id;
+    }
+
+    getAccountNumber(): string {
+        return this._accountNumber;
+    }
+
+    getBalance(): number {
+        return this._balance;
+    }
+
+    getTransactions(): Transaction[] {
+        return this._transactions;
     }
 
     abstract deposit(amount: number): void;
@@ -29,61 +51,22 @@ export abstract class Account {
     transfer(amount: number, targetAccount: Account): void {
         // Implementação será feita posteriormente
     }
-}
 
-export class CheckingAccount extends Account {
-    overdraftLimit: number;
-
-    constructor(id: string, accountNumber: string, balance: number, overdraftLimit: number) {
-        super(id, "Checking Account", accountNumber, balance);
-        this.overdraftLimit = overdraftLimit;
-    }
-
-    deposit(amount: number): void {
+    payBill(amount: number): void {
         // Implementação será feita posteriormente
     }
 
-    withdraw(amount: number): void {
+    receivePension(): void {
         // Implementação será feita posteriormente
     }
 
-    getStatement(): Transaction[] {
-        // Implementação será feita posteriormente
-        return [];
+    static openAccount(id: number, accountNumber: string, balance: number, type: string): Account {
+        if (type === "Checking Account") {
+            return new CheckingAccount(id, accountNumber, balance, 0);
+        } else if (type === "Savings Account") {
+            return new SavingsAccount(id, accountNumber, balance, 0);
+        } else {
+            throw new Error("Tipo de conta inválido");
+        }
     }
-
-    transfer(amount: number, targetAccount: Account): void {
-        // Implementação será feita posteriormente
-    }
-}
-
-export class SavingsAccount extends Account {
-    interestRate: number;
-
-    constructor(id: string, accountNumber: string, balance: number, interestRate: number) {
-        super(id, "Savings Account", accountNumber, balance);
-        this.interestRate = interestRate;
-    }
-
-    deposit(amount: number): void {
-        // Implementação será feita posteriormente
-    }
-
-    withdraw(amount: number): void {
-        // Implementação será feita posteriormente
-    }
-
-    getStatement(): Transaction[] {
-        // Implementação será feita posteriormente
-        return [];
-    }
-
-    transfer(amount: number, targetAccount: Account): void {
-        // Implementação será feita posteriormente
-    }
-}
-
-export function openAccount(customer: Customer, type: string, initialBalance: number): Account {
-    // Implementação será feita posteriormente
-    return {} as Account;
 }

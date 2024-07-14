@@ -1,26 +1,79 @@
 import { Transaction } from "./Transaction";
-import { Customer } from "./Customer";
 import { Account } from "./Account";
 
-export interface CreditCard {
-  id: string;
-  cardNumber: string;
-  creditLimit: number;
-  outstandingBalance: number;
-  transactions: Transaction[];
-  account: Account;
+export interface CreditCardData {
+  getId(): number;
+  getCardNumber(): number;
+  getCreditLimit(): number;
+  getOutstandingBalance(): number;
+  getTransactions(): Transaction[];
+  getAccount(): Account;
+  getDueDate(): Date;
+  getClosingDate(): Date;
 }
 
-export function issueCard(customer: Customer): CreditCard {
-  // Implementar lógica para emitir um novo cartão de crédito
-  return {} as CreditCard;
-}
+export class CreditCard implements CreditCardData {
+  private _id: number;
+  private _cardNumber: number;
+  private _creditLimit: number;
+  private _outstandingBalance: number;
+  private _transactions: Transaction[];
+  private _account: Account;
+  private _duedate: Date;
+  private _closingDate: Date;
 
-export function checkOutstandingBalance(creditCard: CreditCard): number {
-  // Implementar lógica para verificar saldo devedor do cartão de crédito
-  return creditCard.outstandingBalance;
-}
+  constructor(id: number, cardNumber: number, creditLimit: number, account: Account, duedate: Date, closingDate: Date) {
+    this._id = id;
+    this._cardNumber = cardNumber;
+    this._creditLimit = creditLimit;
+    this._outstandingBalance = 0; 
+    this._transactions = [];
+    this._account = account;
+    this._duedate = duedate;
+    this._closingDate = closingDate;
+  }
 
-export function payBillCreditCard(creditCard: CreditCard, amount: number): void {
-  // Implementar lógica para pagar a fatura do cartão de crédito
+  getId(): number {
+    return this._id;
+  }
+
+  getCardNumber(): number {
+    return this._cardNumber;
+  }
+
+  getCreditLimit(): number {
+    return this._creditLimit;
+  }
+
+  getOutstandingBalance(): number {
+    return this._outstandingBalance;
+  }
+
+  getTransactions(): Transaction[] {
+    return this._transactions;
+  }
+
+  getAccount(): Account {
+    return this._account;
+  }
+
+  getDueDate(): Date {
+    return this._duedate;
+  }
+  getClosingDate(): Date {
+    return this._closingDate
+  }
+
+  issueCard(): void {
+    // Implementação será feita posteriormente
+  }
+
+  checkOutstandingBalance(): number {
+    // Implementação será feita posteriormente
+    return this._outstandingBalance;
+  }
+
+  payBill(): void {
+    // Implementação será feita posteriormente
+  }
 }
