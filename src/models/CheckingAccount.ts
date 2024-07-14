@@ -18,19 +18,19 @@ export class CheckingAccount extends Account implements CheckingAccountData {
   }
 
   deposit(amount: number): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método deposit não implementado.");
   }
 
   withdraw(amount: number): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método withdraw não implementado.");
   }
 
   getStatement(): Transaction[] {
-    // Implementação será feita posteriormente
-    return [];
+    throw new Error("Método getStatement não implementado.");
   }
+  
 
   transfer(amount: number, targetAccount: Account): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método transfer não implementado.");
   }
 }

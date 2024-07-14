@@ -32,17 +32,18 @@ export class Manager implements ManagerData {
 }
 
 export function dailyAccountReport(manager: Manager): void {
-  // Implementar lógica para gerar relatório diário das contas
+  throw new Error("Função dailyAccountReport não implementada.");
 }
 
 export function weeklyAccountReport(manager: Manager): void {
-  // Implementar lógica para gerar relatório semanal das contas
+  throw new Error("Função weeklyAccountReport não implementada.");
 }
 
 export function manageCustomer(manager: Manager, customer: Customer): void {
-  // Implementar lógica para gerenciar um cliente específico
+  throw new Error("Função manageCustomer não implementada.");
 }
 
 export function approveCustomerCredit(manager: Manager, credit: Credit): void {
-  // Implementar lógica para aprovar crédito de um cliente
+  throw new Error("Função approveCustomerCredit não implementada.");
 }
+

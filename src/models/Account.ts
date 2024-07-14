@@ -49,15 +49,15 @@ export abstract class Account implements AccountData {
     abstract getStatement(): Transaction[];
 
     transfer(amount: number, targetAccount: Account): void {
-        // Implementação será feita posteriormente
+        throw new Error("Método transfer não implementado.");
     }
 
     payBill(amount: number): void {
-        // Implementação será feita posteriormente
+        throw new Error("Método payBill não implementado.");
     }
 
-    receivePension(): void {
-        // Implementação será feita posteriormente
+    receivePension(amount: number): void {
+        throw new Error("Método receivePension não implementado.");
     }
 
     static openAccount(id: number, accountNumber: string, balance: number, type: string): Account {

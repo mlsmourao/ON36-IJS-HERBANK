@@ -90,11 +90,11 @@ export class Customer implements CustomerData {
   }
 
   newCustomer(): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método newCustomer não implementado.");
   }
 
   updateCustomer(): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método updateCustomer não implementado.");
   }
 
   getCreditHistoryMethod(): Credit[] {

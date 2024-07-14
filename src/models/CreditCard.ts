@@ -65,15 +65,16 @@ export class CreditCard implements CreditCardData {
   }
 
   issueCard(): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método issueCard não implementado.");
   }
+
 
   checkOutstandingBalance(): number {
-    // Implementação será feita posteriormente
-    return this._outstandingBalance;
+    throw new Error("Método checkOutstandingBalance não implementado.");
   }
 
+
   payBill(): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método payBill não implementado.");
   }
 }

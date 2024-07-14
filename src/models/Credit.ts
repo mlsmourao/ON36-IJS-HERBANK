@@ -89,15 +89,14 @@ export class Credit implements CreditData {
 
 
   requestCredit(): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método requestCredit não implementado.");
   }
 
   approveCredit(): void {
-    // Implementação será feita posteriormente
+    throw new Error("Método approveCredit não implementado.");
   }
 
   checkStatus(): string {
-    // Implementação será feita posteriormente
-    return this._status;
+    throw new Error("Método checkStatus não implementado.");
   }
 }

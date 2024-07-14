@@ -66,10 +66,9 @@ export class Transaction implements TransactionData {
 }
 
 export function recordTransaction(transaction: TransactionData): void {
-  // Implementar lógica para registrar transação
+  throw new Error("Função recordTransaction não implementada.");
 }
 
 export function checkTransaction(transactionId: string): TransactionData {
-  // Implementar lógica para verificar detalhes de uma transação específica
-  return {} as TransactionData;
+  throw new Error("Função checkTransaction não implementada.");
 }
