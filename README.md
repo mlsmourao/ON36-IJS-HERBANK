@@ -26,7 +26,6 @@ Representa um membro da comunidade utilizando os serviços do banco.
 - **Atributos**:
   - id: Identificador único do cliente.
   - name: Nome do cliente.
-  - age: Idade do cliente.
   - birthDate: Data de nascimento do cliente.
   - cpf: CPF do cliente.
   - address: Endereço do cliente.
@@ -61,13 +60,16 @@ Representa a conta corrente de um cliente.
   - payBill(): Paga uma conta utilizando fundos da conta.
   - receivePension(): Facilita o recebimento de aposentadorias na conta.
 
+- **Subclasses**:
+  - CheckingAccount: Conta corrente para clientes.
+  - SavingsAccount: Conta poupança para clientes.
+
 ### Credit:
 
 Representa um crédito oferecido a um cliente.
 
 - **Atributos**:
   - id: Identificador único do crédito.
-  - type: Tipo de crédito (por exemplo, pessoal, empresarial).
   - amount: Valor do crédito.
   - interest: Taxa de juros do crédito.
   - approvalDate: Data de aprovação do crédito.
@@ -75,6 +77,8 @@ Representa um crédito oferecido a um cliente.
   - transactions: Array de objetos relacionados ao crédito.
   - status: Status da aplicação de crédito.
   - account: Objeto representando os dados da conta do cliente.
+  - installments: Quantidade de parcelas para o crédito.
+  - remainingAmount: Montante restante para quitação do crédito.
 
 - **Métodos**:
   - requestCredit(): Inicia uma solicitação de crédito.
@@ -106,6 +110,9 @@ Representa um cartão de crédito associado a um cliente.
   - creditLimit: Limite de crédito do cartão.
   - outstandingBalance: Saldo devedor do cartão.
   - transactions: Array de objetos representando as transações do cartão.
+  - account: Retorna os dados da conta atrelado ao cartão.
+  - dueDate: data de vencimento do cartão.
+  - closingDate: data de fechamento da fatura do cartão.
 
 - **Métodos**:
   - issueCard(): Emite um novo cartão de crédito para o cliente.
