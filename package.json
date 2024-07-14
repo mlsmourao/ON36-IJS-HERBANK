@@ -1,0 +1,19 @@
+{
+  "name": "on36-ijs-herbank",
+  "version": "1.0.0",
+  "description": "Bem-vindo ao projeto do Banco Comunitário desenvolvido para a comunidade {Reprograma} para o curso de Imersão em JavaScript com foco em back-end e Nuvem AWS. Este projeto visa estabelecer um serviço financeiro comunitário focado em capacitar mulheres e apoiar diversas necessidades como reinserção profissional, apoio educacional para crianças, assistência para pessoas transgênero e tratamentos psicológicos.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.3"
+  }
+}
