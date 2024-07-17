@@ -1,26 +1,11 @@
-export interface TransactionData {
-  getId(): string;
-  getType(): string;
-  getAmount(): number;
-  getDate(): Date;
-  getStatus(): string;
-  getTransactionData(): {
-    id: string;
-    type: string;
-    amount: number;
-    date: Date;
-    status: string;
-  };
-}
-
-export class Transaction implements TransactionData {
+export class Transaction {
   private id: string;
   private type: string;
   private amount: number;
   private date: Date;
   private status: string;
 
-  constructor(id: string, type: string, amount: number, date: Date, status: string) {
+  constructor(id: string, type: string, amount: number, date: Date = new Date(), status: string) {
     this.id = id;
     this.type = type;
     this.amount = amount;
@@ -63,12 +48,4 @@ export class Transaction implements TransactionData {
       status: this.status
     };
   }
-}
-
-export function recordTransaction(transaction: TransactionData): void {
-  throw new Error("Função recordTransaction não implementada.");
-}
-
-export function checkTransaction(transactionId: string): TransactionData {
-  throw new Error("Função checkTransaction não implementada.");
 }

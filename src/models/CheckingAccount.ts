@@ -1,15 +1,11 @@
 import { Account } from "./Account";
 import { Transaction } from "./Transaction";
 
-export interface CheckingAccountData {
-  getOverdraftLimit(): number;
-}
-
-export class CheckingAccount extends Account implements CheckingAccountData {
+export class CheckingAccount extends Account {
   private _overdraftLimit: number;
 
   constructor(id: number, accountNumber: string, balance: number, overdraftLimit: number) {
-    super(id, accountNumber, balance); 
+    super(id, accountNumber, balance);
     this._overdraftLimit = overdraftLimit;
   }
 
@@ -18,19 +14,35 @@ export class CheckingAccount extends Account implements CheckingAccountData {
   }
 
   deposit(amount: number): void {
-    throw new Error("Método deposit não implementado.");
+    if (amount <= 0) {
+      throw new Error("O valor do depósito deve ser positivo.");
+    }
+    this.updateBalance(amount);
   }
 
   withdraw(amount: number): void {
-    throw new Error("Método withdraw não implementado.");
+    if (amount <= 0) {
+      throw new Error("O valor do saque deve ser positivo.");
+    }
+    if (amount > this.getBalance() + this._overdraftLimit) {
+      throw new Error("Saldo e limite de cheque especial insuficientes para saque.");
+    }
+    this.updateBalance(-amount);
   }
 
   getStatement(): Transaction[] {
-    throw new Error("Método getStatement não implementado.");
+    return this.getTransactions();
   }
-  
 
-  transfer(amount: number, targetAccount: Account): void {
-    throw new Error("Método transfer não implementado.");
+  transfer(amount: number, targetAccount: Account, transaction: Transaction): void {
+    if (amount <= 0) {
+      throw new Error("O valor da transferência deve ser positivo.");
+    }
+    if (amount > this.getBalance() + this._overdraftLimit) {
+      throw new Error("Saldo e limite de cheque especial insuficientes para transferência.");
+    }
+    this.withdraw(amount);
+    targetAccount.deposit(amount);
+    this.addTransaction(transaction);
   }
 }

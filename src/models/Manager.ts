@@ -1,13 +1,7 @@
 import { Customer } from "./Customer";
 import { Credit } from "./Credit";
 
-export interface ManagerData {
-  getId(): number;
-  getName(): string;
-  getCustomers(): Customer[];
-}
-
-export class Manager implements ManagerData {
+export class Manager {
   private id: number;
   private fullName: string;
   private customers: Customer[];
@@ -29,21 +23,46 @@ export class Manager implements ManagerData {
   getCustomers(): Customer[] {
     return this.customers;
   }
-}
 
-export function dailyAccountReport(manager: Manager): void {
-  throw new Error("Função dailyAccountReport não implementada.");
-}
+  dailyAccountReport(): void {
+    console.log("Relatório diário das contas:");
+    this.customers.forEach(customer => {
+      console.log(`Cliente: ${customer.getName()}`);
+      customer.getAccounts().forEach(account => {
+        console.log(`Conta: ${account.getAccountNumber()}, Saldo: ${account.getBalance()}`);
+      });
+    });
+  }
 
-export function weeklyAccountReport(manager: Manager): void {
-  throw new Error("Função weeklyAccountReport não implementada.");
-}
+  weeklyAccountReport(): void {
+    console.log("Relatório semanal das contas:");
+    this.customers.forEach(customer => {
+      console.log(`Cliente: ${customer.getName()}`);
+      customer.getAccounts().forEach(account => {
+        console.log(`Conta: ${account.getAccountNumber()}, Saldo: ${account.getBalance()}`);
+      });
+    });
+  }
 
-export function manageCustomer(manager: Manager, customer: Customer): void {
-  throw new Error("Função manageCustomer não implementada.");
-}
+  manageCustomer(customer: Customer): void {
+    const existingCustomer = this.customers.find(c => c.getId() === customer.getId());
+    if (existingCustomer) {
+      console.log(`Atualizando cliente: ${customer.getName()}`);
+      existingCustomer.updateCustomer();
+    } else {
+      console.log(`Adicionando novo cliente: ${customer.getName()}`);
+      this.customers.push(customer);
+      customer.newCustomer();
+    }
+  }
 
-export function approveCustomerCredit(manager: Manager, credit: Credit): void {
-  throw new Error("Função approveCustomerCredit não implementada.");
+  // approveCustomerCredit(credit: Credit): void {
+  //   const customer = this.customers.find(c => c.getId() === credit.getCustomerId());
+  //   if (customer) {
+  //     console.log(`Aprovando crédito para cliente: ${customer.getName()}`);
+  //     customer.getCreditHistory().push(credit);
+  //   } else {
+  //     console.log("Cliente não encontrado para aprovação de crédito.");
+  //   }
+  // }
 }
-

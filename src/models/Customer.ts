@@ -2,22 +2,9 @@ import { Account } from "./Account";
 import { Manager } from "./Manager";
 import { Credit } from "./Credit";
 
-export interface CustomerData {
-  getId(): number;
-  getName(): string;
-  getBirthDate(): Date;
-  getCpf(): string;
-  getAddress(): string;
-  getPhoneNumbers(): string[];
-  getEmail(): string;
-  getCreditHistory(): Credit[];
-  getAccounts(): Account[];
-  getManager(): Manager;
-}
-
-export class Customer implements CustomerData {
+export class Customer {
   private _id: number;
-  private _name: string;
+  private _fullName: string;
   private _birthDate: Date;
   private _cpf: string;
   private _address: string;
@@ -29,7 +16,7 @@ export class Customer implements CustomerData {
 
   constructor(
     id: number,
-    name: string,
+    fullName: string,
     birthDate: Date,
     cpf: string,
     address: string,
@@ -38,7 +25,7 @@ export class Customer implements CustomerData {
     manager: Manager
   ) {
     this._id = id;
-    this._name = name;
+    this._fullName = fullName;
     this._birthDate = birthDate;
     this._cpf = cpf;
     this._address = address;
@@ -54,7 +41,7 @@ export class Customer implements CustomerData {
   }
 
   getName(): string {
-    return this._name;
+    return this._fullName;
   }
 
   getBirthDate(): Date {
@@ -90,14 +77,26 @@ export class Customer implements CustomerData {
   }
 
   newCustomer(): void {
-    throw new Error("Método newCustomer não implementado.");
+    console.log(`Adicionando novo cliente: ${this._fullName}`);
+    this._manager.getCustomers().push(this);
   }
 
-  updateCustomer(): void {
-    throw new Error("Método updateCustomer não implementado.");
+  updateCustomer(updatedDetails: Partial<Customer>): void {
+    console.log(`Atualizando informações do cliente: ${this._fullName}`);
+    if (updatedDetails.getName !== undefined) this._fullName = updatedDetails.getName();
+    if (updatedDetails.getBirthDate !== undefined) this._birthDate = updatedDetails.getBirthDate();
+    if (updatedDetails.getCpf !== undefined) this._cpf = updatedDetails.getCpf();
+    if (updatedDetails.getAddress !== undefined) this._address = updatedDetails.getAddress();
+    if (updatedDetails.getPhoneNumbers !== undefined) this._phoneNumbers = updatedDetails.getPhoneNumbers();
+    if (updatedDetails.getEmail !== undefined) this._email = updatedDetails.getEmail();
+    if (updatedDetails.getCreditHistory !== undefined) this._creditHistory = updatedDetails.getCreditHistory();
+    if (updatedDetails.getAccounts !== undefined) this._accounts = updatedDetails.getAccounts();
+    if (updatedDetails.getManager !== undefined) this._manager = updatedDetails.getManager();
   }
 
   getCreditHistoryMethod(): Credit[] {
     return this._creditHistory;
   }
 }
+
+

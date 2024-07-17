@@ -1,35 +1,42 @@
 import { Account } from "./Account";
 import { Transaction } from "./Transaction";
 
-export interface SavingsAccountData {
-  getInterestRate(): number;
-}
-
-export class SavingsAccount extends Account implements SavingsAccountData {
+export class SavingsAccount extends Account {
   private _interestRate: number;
+  private _yieldAmount: number;
 
-  constructor(id: number, accountNumber: string, balance: number, interestRate: number) {
-    super(id, accountNumber, balance); 
+  constructor(id: number, accountNumber: string, balance: number, interestRate: number, rendimento: number) {
+    super(id, accountNumber, balance);
     this._interestRate = interestRate;
+    this._yieldAmount = rendimento;
   }
 
   getInterestRate(): number {
     return this._interestRate;
   }
 
+  getRendimento(): number {
+    return this._yieldAmount;
+  }
+
   deposit(amount: number): void {
-    throw new Error("Método deposit não implementado.");
+    if (amount <= 0) {
+      throw new Error("O valor do depósito deve ser positivo.");
+    }
+    this.updateBalance(amount);
   }
 
   withdraw(amount: number): void {
-    throw new Error("Método withdraw não implementado.");
+    if (amount <= 0) {
+      throw new Error("O valor do saque deve ser positivo.");
+    }
+    if (amount > this.getBalance()) {
+      throw new Error("Saldo insuficiente para saque.");
+    }
+    this.updateBalance(-amount);
   }
 
   getStatement(): Transaction[] {
-    throw new Error("Método getStatement não implementado.");
-  }
-
-  transfer(amount: number, targetAccount: Account): void {
-    throw new Error("Método transfer não implementado.");
+    return this.getTransactions();
   }
 }
