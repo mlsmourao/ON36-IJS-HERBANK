@@ -15,7 +15,7 @@ export class SavingsAccount extends Account {
     return this._interestRate;
   }
 
-  getRendimento(): number {
+  getYieldAmount(): number {
     return this._yieldAmount;
   }
 
