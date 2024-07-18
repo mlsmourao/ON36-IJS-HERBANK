@@ -79,4 +79,5 @@ export abstract class Account {
   checkTransaction(transactionId: string): Transaction | undefined {
     return this._transactions.find(transaction => transaction.getId() === transactionId);
   }
+
 }

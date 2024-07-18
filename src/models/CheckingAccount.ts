@@ -45,4 +45,8 @@ export class CheckingAccount extends Account {
     targetAccount.deposit(amount);
     this.addTransaction(transaction);
   }
+
+  static openAccount(id: number, accountNumber: string, balance: number, interestRate: number, yieldAmount: number): CheckingAccount {
+    return new CheckingAccount(id, accountNumber, balance, interestRate);
+  }
 }

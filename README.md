@@ -25,20 +25,19 @@ Representa um membro da comunidade utilizando os serviços do banco.
 
 - **Atributos**:
   - id: Identificador único do cliente.
-  - name: Nome do cliente.
+  - fullName: Nome do cliente.
   - birthDate: Data de nascimento do cliente.
   - cpf: CPF do cliente.
   - address: Endereço do cliente.
   - phoneNumber: Lista de números de telefone de contato do cliente.
   - email: Endereço de e-mail do cliente.
   - creditHistory: Array de objetos detalhando o histórico de créditos do cliente.
-  - currentAccount: Objeto representando a conta corrente do cliente.
+  - accounts: Lista de contas do cliente.
   - manager: Objeto representando os dados do gerente associado a este cliente.
 
 - **Métodos**:
   - newCustomer(): Registra um novo cliente no sistema do banco.
   - updateCustomer(): Atualiza informações do cliente.
-  - getCreditHistory(): Retorna o histórico de créditos do cliente.
 
 ### Account:
 
@@ -49,20 +48,28 @@ Representa a conta corrente de um cliente.
   - accountNumber: Número da conta.
   - balance: Saldo atual da conta.
   - transactions: Array de objetos representando as transações da conta.
-  - credits: Array de objetos detalhando o histórico de créditos do cliente.
-  - creditCards: Array de objetos detalhando os cartões de crédito do cliente.
 
 - **Métodos**:
+  - addTransactions(): Registra nova transação
+  - updateBalance(): Atualiza salvo devedor.
   - openAccount(): Abre uma nova conta corrente para um cliente.
   - getStatement(): Retorna o extrato da conta.
   - deposit(): Realiza um depósito na conta.
   - withdraw(): Realiza um saque na conta.
   - payBill(): Paga uma conta utilizando fundos da conta.
   - receivePension(): Facilita o recebimento de aposentadorias na conta.
+  - checkTransaction(): verifica transações.
 
 - **Subclasses**:
   - CheckingAccount: Conta corrente para clientes.
+  - **Atributos**:
+  - overdraftLimit: limite de cheque especial.
+
   - SavingsAccount: Conta poupança para clientes.
+
+  - **Atributos**:
+  - interestRate: taxa de juros para rendimento.
+  - yieldAmount: valor de rendimento.
 
 ### Credit:
 
@@ -70,20 +77,50 @@ Representa um crédito oferecido a um cliente.
 
 - **Atributos**:
   - id: Identificador único do crédito.
-  - amount: Valor do crédito.
-  - interest: Taxa de juros do crédito.
-  - approvalDate: Data de aprovação do crédito.
-  - dueDate: Data de vencimento do crédito.
-  - transactions: Array de objetos relacionados ao crédito.
-  - status: Status da aplicação de crédito.
-  - account: Objeto representando os dados da conta do cliente.
-  - installments: Quantidade de parcelas para o crédito.
-  - remainingAmount: Montante restante para quitação do crédito.
+  - account: conta atrelada ao crédito
+
+- **Subclasses**
+
+ - CreditCard: Representa um cartão de crédito associado a um cliente.
+
+- **Atributos**:
+  - cardNumber: Número do cartão de crédito.
+  - securityCode: Código de segurança do cartão.
+  - cardExpiration: Data de expiração do cartão.
+  - creditLimit: Limite de crédito do cartão.
+  - outstandingBalance: Saldo devedor do cartão.
+  - transactions: Array de objetos representando as transações do cartão.
+  - dueDates: Lista de datas de vencimento do cartão.
+  - closingDates: Lista de datas de fechamento da fatura do cartão.
 
 - **Métodos**:
+  - issueCard(): Emite um novo cartão de crédito para o cliente.
+  - checkOutstandingBalance(): Retorna o saldo devedor do cartão.
+  - payBill(): Realiza o pagamento da fatura do cartão;
+  - getInvoice(): Extrai fatura do cartão de crédito em um mês.
+  - getCardHistory(): Extrai histórico do cartão.
+
+  - Loan: Empréstimo vínculado à conta de um cliente.
+
+  - **Atributos**:
+  - amount: Montante do empréstimo.
+  - interest: Taxa de juros do crédito.
+  - approvalDate: Data de aprovação do crédito.
+  - dueDates: Data de vencimento do crédito.
+  - installments: Número de parcelas do empréstimo.
+  - status: status do empréstimo.
+  - transactions: Array de objetos relacionados ao crédito.
+  - installmentTransactions: Lista das parcelas do empréstimo
+  - installmentsStatus: Lista de status das parcelas.
+
+- **Métodos**:
+  - payInstallment(): Abate o valor do saldo devedor do empréstimo.
   - requestCredit(): Inicia uma solicitação de crédito.
   - approveCredit(): Aprova o crédito.
   - checkStatus(): Retorna o status atual da solicitação de crédito.
+  - getInvoice(): Emite fatura do empréstimo.
+  - getCreditHistory(): Emite o histórico de parcelas do empréstimo.
+  - checkStatus(): Verifica o status do empréstimo.
 
 ### Transaction:
 
@@ -99,25 +136,6 @@ Representa uma transação financeira.
 - **Métodos**:
   - recordTransaction(): Registra uma transação no sistema.
   - checkTransaction(): Retorna objeto com detalhes de uma transação específica.
-
-### CreditCard:
-
-Representa um cartão de crédito associado a um cliente.
-
-- **Atributos**:
-  - cardId: Identificador único do cartão.
-  - cardNumber: Número do cartão.
-  - creditLimit: Limite de crédito do cartão.
-  - outstandingBalance: Saldo devedor do cartão.
-  - transactions: Array de objetos representando as transações do cartão.
-  - account: Retorna os dados da conta atrelado ao cartão.
-  - dueDate: data de vencimento do cartão.
-  - closingDate: data de fechamento da fatura do cartão.
-
-- **Métodos**:
-  - issueCard(): Emite um novo cartão de crédito para o cliente.
-  - checkOutstandingBalance(): Retorna o saldo devedor do cartão.
-  - payBill(): Realiza o pagamento da fatura do cartão.
 
 ### Manager:
 

@@ -5,10 +5,10 @@ export class SavingsAccount extends Account {
   private _interestRate: number;
   private _yieldAmount: number;
 
-  constructor(id: number, accountNumber: string, balance: number, interestRate: number, rendimento: number) {
+  constructor(id: number, accountNumber: string, balance: number, interestRate: number, yieldAmount: number) {
     super(id, accountNumber, balance);
     this._interestRate = interestRate;
-    this._yieldAmount = rendimento;
+    this._yieldAmount = yieldAmount;
   }
 
   getInterestRate(): number {
@@ -39,4 +39,9 @@ export class SavingsAccount extends Account {
   getStatement(): Transaction[] {
     return this.getTransactions();
   }
+
+  static openAccount(id: number, accountNumber: string, balance: number, interestRate: number, yieldAmount: number): SavingsAccount {
+    return new SavingsAccount(id, accountNumber, balance, interestRate, yieldAmount);
+  }
+
 }
