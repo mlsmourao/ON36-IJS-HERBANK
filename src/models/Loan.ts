@@ -10,7 +10,7 @@ export class Loan extends Credit {
   private _installments: number;
   private _status: string;
   private _installmentTransactions: Transaction[];
-  private _installmentStatus: string[]; // Array para armazenar o status de cada parcela
+  private _installmentStatus: string[];
 
   constructor(
     id: number,
@@ -31,10 +31,10 @@ export class Loan extends Credit {
     this._installments = installments;
     this._status = status;
     this._installmentTransactions = installmentTransactions;
-    this._installmentStatus = new Array(installments).fill("pending"); // Inicializa todos as parcelas como pendentes
+    this._installmentStatus = new Array(installments).fill("pending"); 
   }
 
-  // Método para realizar o pagamento de uma parcela específica
+  
   payInstallment(installmentIndex: number, amount: number): void {
     if (installmentIndex < 0 || installmentIndex >= this._installments) {
       throw new Error("Índice de parcela inválido.");
@@ -44,7 +44,6 @@ export class Loan extends Credit {
       throw new Error("Esta parcela já foi paga.");
     }
 
-    // Lógica para verificar e aplicar o pagamento da parcela
     if (amount <= 0) {
       throw new Error("Valor inválido para pagamento.");
     }
@@ -52,14 +51,12 @@ export class Loan extends Credit {
       throw new Error("Valor excede o saldo devedor.");
     }
 
-    // Considerando que o pagamento está correto, atualiza o status da parcela e o saldo devedor
     this._installmentStatus[installmentIndex] = "paid";
-    this._amount -= amount; // Abate o valor do saldo devedor
+    this._amount -= amount; 
 
     console.log(`Pagamento da parcela ${installmentIndex + 1} realizado com sucesso.`);
   }
 
-  // Implementação dos métodos abstratos da classe Credit
   payBill(amount: number): void {
     throw new Error("Método não implementado para empréstimo.");
   }
@@ -95,7 +92,7 @@ export class Loan extends Credit {
     return this._installmentTransactions;
   }
 
-  // Métodos adicionais para gerenciar o empréstimo
+  
   requestCredit(): void {
     console.log("Solicitação de crédito realizada.");
   }
@@ -108,7 +105,6 @@ export class Loan extends Credit {
     return this._status;
   }
 
-  // Getters para os atributos da classe Loan
   getAmount(): number {
     return this._amount;
   }
