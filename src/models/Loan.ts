@@ -88,7 +88,7 @@ export class Loan extends Credit {
     return invoiceTransactions;
   }
 
-  getCardHistory(): Transaction[] {
+  getCreditHistory(): Transaction[] {
     return this._installmentTransactions;
   }
 
