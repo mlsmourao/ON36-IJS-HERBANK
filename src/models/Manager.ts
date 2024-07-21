@@ -44,17 +44,17 @@ export class Manager {
     });
   }
 
-  manageCustomer(customer: Customer): void {
-    const existingCustomer = this.customers.find(c => c.getId() === customer.getId());
-    if (existingCustomer) {
-      console.log(`Atualizando cliente: ${customer.getName()}`);
-      existingCustomer.updateCustomer();
-    } else {
-      console.log(`Adicionando novo cliente: ${customer.getName()}`);
-      this.customers.push(customer);
-      customer.newCustomer();
-    }
-  }
+  // manageCustomer(customer: Customer): void {
+  //   const existingCustomer = this.customers.find(c => c.getId() === customer.getId());
+  //   if (existingCustomer) {
+  //     console.log(`Atualizando cliente: ${customer.getName()}`);
+  //     existingCustomer.updateCustomer();
+  //   } else {
+  //     console.log(`Adicionando novo cliente: ${customer.getName()}`);
+  //     this.customers.push(customer);
+  //     customer.newCustomer();
+  //   }
+  // }
 
   // approveCustomerCredit(credit: Credit): void {
   //   const customer = this.customers.find(c => c.getId() === credit.getCustomerId());

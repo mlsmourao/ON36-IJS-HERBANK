@@ -81,18 +81,18 @@ export class Customer {
     this._manager.getCustomers().push(this);
   }
 
-  updateCustomer(updatedDetails: Partial<Customer>): void {
-    console.log(`Atualizando informações do cliente: ${this._fullName}`);
-    if (updatedDetails.getName !== undefined) this._fullName = updatedDetails.getName();
-    if (updatedDetails.getBirthDate !== undefined) this._birthDate = updatedDetails.getBirthDate();
-    if (updatedDetails.getCpf !== undefined) this._cpf = updatedDetails.getCpf();
-    if (updatedDetails.getAddress !== undefined) this._address = updatedDetails.getAddress();
-    if (updatedDetails.getPhoneNumbers !== undefined) this._phoneNumbers = updatedDetails.getPhoneNumbers();
-    if (updatedDetails.getEmail !== undefined) this._email = updatedDetails.getEmail();
-    if (updatedDetails.getCreditHistory !== undefined) this._creditHistory = updatedDetails.getCreditHistory();
-    if (updatedDetails.getAccounts !== undefined) this._accounts = updatedDetails.getAccounts();
-    if (updatedDetails.getManager !== undefined) this._manager = updatedDetails.getManager();
-  }
+  // updateCustomer(updatedDetails: Partial<Customer>): void {
+  //   console.log(`Atualizando informações do cliente: ${this._fullName}`);
+  //   if (updatedDetails.getName !== undefined) this._fullName = updatedDetails.getName();
+  //   if (updatedDetails.getBirthDate !== undefined) this._birthDate = updatedDetails.getBirthDate();
+  //   if (updatedDetails.getCpf !== undefined) this._cpf = updatedDetails.getCpf();
+  //   if (updatedDetails.getAddress !== undefined) this._address = updatedDetails.getAddress();
+  //   if (updatedDetails.getPhoneNumbers !== undefined) this._phoneNumbers = updatedDetails.getPhoneNumbers();
+  //   if (updatedDetails.getEmail !== undefined) this._email = updatedDetails.getEmail();
+  //   if (updatedDetails.getCreditHistory !== undefined) this._creditHistory = updatedDetails.getCreditHistory();
+  //   if (updatedDetails.getAccounts !== undefined) this._accounts = updatedDetails.getAccounts();
+  //   if (updatedDetails.getManager !== undefined) this._manager = updatedDetails.getManager();
+  // }
 
   getCreditHistoryMethod(): Credit[] {
     return this._creditHistory;
