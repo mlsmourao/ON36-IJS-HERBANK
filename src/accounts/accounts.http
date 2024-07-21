@@ -1,0 +1,32 @@
+### List Accounts
+
+GET http://localhost:3000/accounts
+
+### Get Developer
+
+GET http://localhost:3000/accounts/1
+
+### Create Developer
+
+POST http://localhost:3000/accounts
+Content-Type: application/json
+
+{
+    "accountNumber": "123",
+    "balance": 123,
+    "transactions": []
+}
+
+### Update Developer
+
+PATCH http://localhost:3000/accounts/1
+Content-Type: application/json
+
+{
+    "balance":1234
+}
+
+
+### Delete Developer
+
+DELETE http://localhost:3000/developers/1
