@@ -7,6 +7,7 @@ import { AccountsModule } from './accounts/accounts.module';
 import { ManagersModule } from './managers/managers.module';
 import { CustomersModule } from './customers/customers.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { CreditsModule } from './credits/credits.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { TransactionsModule } from './transactions/transactions.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Não utilizar em prod
     }),
-    DevelopersModule, AccountsModule, ManagersModule, CustomersModule, TransactionsModule],
+    DevelopersModule, AccountsModule, ManagersModule, CustomersModule, TransactionsModule, CreditsModule],
   controllers: [AppController],
   providers: [AppService],
 })
