@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { AccountsModule } from './accounts/accounts.module';
 import { ManagersModule } from './managers/managers.module';
 import { CustomersModule } from './customers/customers.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { CustomersModule } from './customers/customers.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Não utilizar em prod
     }),
-    DevelopersModule, AccountsModule, ManagersModule, CustomersModule],
+    DevelopersModule, AccountsModule, ManagersModule, CustomersModule, TransactionsModule],
   controllers: [AppController],
   providers: [AppService],
 })
