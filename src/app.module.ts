@@ -11,6 +11,7 @@ import { CreditsModule } from './credits/credits.module';
 import { SavingsAccountsModule } from './savings-accounts/savings-accounts.module';
 import { CheckingAccountsModule } from './checking-accounts/checking-accounts.module';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
+import { LoansModule } from './loans/loans.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { CreditCardsModule } from './credit-cards/credit-cards.module';
     CreditsModule, 
     SavingsAccountsModule,
     CheckingAccountsModule,
-    CreditCardsModule
+    CreditCardsModule,
+    LoansModule
   ],
   controllers: [AppController],
   providers: [AppService],
