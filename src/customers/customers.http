@@ -1,0 +1,38 @@
+### List Customers
+
+GET http://localhost:3000/customers
+
+### Get Developer
+
+GET http://localhost:3000/customers/1
+
+### Create Developer
+
+POST http://localhost:3000/customers
+Content-Type: application/json
+
+{
+  "fullName": "Maria",
+  "birthDate": "",
+  "cpf": "12345678900",
+  "address": "Rua Maia de Lacerda, 91",
+  "phoneNumbers": [],
+  "email":"marialuiza@mail.com",
+  "creditHistory": [],
+  "accounts": [],
+  "managerId": 1
+}
+
+### Update Developer
+
+PATCH http://localhost:3000/customers/1
+Content-Type: application/json
+
+{
+    "email":"teste@mail.com"
+}
+
+
+### Delete Developer
+
+DELETE http://localhost:3000/developers/1
