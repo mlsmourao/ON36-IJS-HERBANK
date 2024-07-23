@@ -9,6 +9,7 @@ import { CustomersModule } from './customers/customers.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CreditsModule } from './credits/credits.module';
 import { SavingsAccountsModule } from './savings-accounts/savings-accounts.module';
+import { CheckingAccountsModule } from './checking-accounts/checking-accounts.module';
 
 @Module({
   imports: [
@@ -18,7 +19,15 @@ import { SavingsAccountsModule } from './savings-accounts/savings-accounts.modul
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Não utilizar em prod
     }),
-    DevelopersModule, AccountsModule, ManagersModule, CustomersModule, TransactionsModule, CreditsModule, SavingsAccountsModule],
+    DevelopersModule, 
+    AccountsModule, 
+    ManagersModule, 
+    CustomersModule, 
+    TransactionsModule, 
+    CreditsModule, 
+    SavingsAccountsModule,
+    CheckingAccountsModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
