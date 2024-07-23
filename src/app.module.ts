@@ -10,6 +10,7 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { CreditsModule } from './credits/credits.module';
 import { SavingsAccountsModule } from './savings-accounts/savings-accounts.module';
 import { CheckingAccountsModule } from './checking-accounts/checking-accounts.module';
+import { CreditCardsModule } from './credit-cards/credit-cards.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { CheckingAccountsModule } from './checking-accounts/checking-accounts.mo
     TransactionsModule, 
     CreditsModule, 
     SavingsAccountsModule,
-    CheckingAccountsModule
+    CheckingAccountsModule,
+    CreditCardsModule
   ],
   controllers: [AppController],
   providers: [AppService],

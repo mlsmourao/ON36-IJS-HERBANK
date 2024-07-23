@@ -1,0 +1,38 @@
+### List Credit Cards
+
+GET http://localhost:3000/credit_cards
+
+### Get Credit Card
+
+GET http://localhost:3000/credit_cards/1
+
+### Create Credit Card
+
+POST http://localhost:3000/credit_cards
+Content-Type: application/json
+
+{
+    "creditId": 1,
+    "cardNumber": 123456789,
+    "securityCode": "123",
+    "cardExpiration": "03/25",
+    "creditLimit": 1234,
+    "outstandingBalance": 123,
+    "transactionsIds": [],
+    "duedates": [],
+    "closingDates":[]
+}
+
+### Update Credit Card
+
+PATCH http://localhost:3000/credit_cards/1
+Content-Type: application/json
+
+{
+    "securityCode": "1234"
+}
+
+
+### Delete Credit Card
+
+DELETE http://localhost:3000/credit_cards/1
