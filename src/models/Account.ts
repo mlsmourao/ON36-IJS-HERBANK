@@ -37,47 +37,44 @@ export abstract class Account {
     this._balance += amount;
   }
 
+  private validateAmount(amount: number): void {
+    if (amount <= 0) {
+      throw new Error("O valor deve ser positivo.");
+    }
+  }
+
+  private checkSufficientBalance(amount: number): void {
+    if (amount > this._balance) {
+      throw new Error("Saldo insuficiente.");
+    }
+  }
+
   abstract deposit(amount: number): void;
   abstract withdraw(amount: number): void;
   abstract getStatement(): Transaction[];
 
   transfer(amount: number, targetAccount: Account, transaction: Transaction): void {
-    if (amount <= 0) {
-      throw new Error("O valor da transferência deve ser positivo.");
-    }
-    if (amount > this._balance) {
-      throw new Error("Saldo insuficiente para transferência.");
-    }
+    this.validateAmount(amount);
+    this.checkSufficientBalance(amount);
     this.withdraw(amount);
     targetAccount.deposit(amount);
     this.addTransaction(transaction);
   }
 
   payBill(amount: number, transaction: Transaction): void {
-    if (amount <= 0) {
-      throw new Error("O valor da conta deve ser positivo.");
-    }
-    if (amount > this._balance) {
-      throw new Error("Saldo insuficiente para pagar a conta.");
-    }
+    this.validateAmount(amount);
+    this.checkSufficientBalance(amount);
     this.withdraw(amount);
     this.addTransaction(transaction);
   }
 
   receivePension(amount: number, transaction: Transaction): void {
-    if (amount <= 0) {
-      throw new Error("O valor da pensão deve ser positivo.");
-    }
+    this.validateAmount(amount);
     this.deposit(amount);
     this.addTransaction(transaction);
-  }
-
-  recordTransaction(transaction: Transaction): void {
-    this._transactions.push(transaction);
   }
 
   checkTransaction(transactionId: string): Transaction | undefined {
     return this._transactions.find(transaction => transaction.getId() === transactionId);
   }
-
 }

@@ -1,8 +1,8 @@
 import { Account } from "./Account";
 
 export abstract class Credit {
-  protected _id: number;
-  protected _account: Account;
+  private _id: number;
+  private _account: Account;
 
   constructor(id: number, account: Account) {
     this._id = id;
@@ -10,9 +10,7 @@ export abstract class Credit {
   }
 
   abstract payBill(amount: number): void;
-
   abstract getRemainingAmount(): number;
-
   abstract checkOutstandingBalance(): void;
 
   getId(): number {

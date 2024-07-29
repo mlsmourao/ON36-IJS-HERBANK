@@ -14,19 +14,13 @@ export class CheckingAccount extends Account {
   }
 
   deposit(amount: number): void {
-    if (amount <= 0) {
-      throw new Error("O valor do depósito deve ser positivo.");
-    }
+    this.validatePositiveAmount(amount, "depósito");
     this.updateBalance(amount);
   }
 
   withdraw(amount: number): void {
-    if (amount <= 0) {
-      throw new Error("O valor do saque deve ser positivo.");
-    }
-    if (amount > this.getBalance() + this._overdraftLimit) {
-      throw new Error("Saldo e limite de cheque especial insuficientes para saque.");
-    }
+    this.validatePositiveAmount(amount, "saque");
+    this.checkSufficientFunds(amount);
     this.updateBalance(-amount);
   }
 
@@ -35,18 +29,22 @@ export class CheckingAccount extends Account {
   }
 
   transfer(amount: number, targetAccount: Account, transaction: Transaction): void {
-    if (amount <= 0) {
-      throw new Error("O valor da transferência deve ser positivo.");
-    }
-    if (amount > this.getBalance() + this._overdraftLimit) {
-      throw new Error("Saldo e limite de cheque especial insuficientes para transferência.");
-    }
+    this.validatePositiveAmount(amount, "transferência");
+    this.checkSufficientFunds(amount);
     this.withdraw(amount);
     targetAccount.deposit(amount);
     this.addTransaction(transaction);
   }
 
-  static openAccount(id: number, accountNumber: string, balance: number, interestRate: number, yieldAmount: number): CheckingAccount {
-    return new CheckingAccount(id, accountNumber, balance, interestRate);
+  private validatePositiveAmount(amount: number, type: string): void {
+    if (amount <= 0) {
+      throw new Error(`O valor do ${type} deve ser positivo.`);
+    }
+  }
+
+  private checkSufficientFunds(amount: number): void {
+    if (amount > this.getBalance() + this._overdraftLimit) {
+      throw new Error("Saldo e limite de cheque especial insuficientes.");
+    }
   }
 }

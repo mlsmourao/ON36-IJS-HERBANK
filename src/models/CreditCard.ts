@@ -65,31 +65,12 @@ export class CreditCard extends Credit {
     return this._closingDates;
   }
 
-  issueCard(): CreditCard {
-    return new CreditCard(
-      this.getId(),
-      this._cardNumber,
-      this._securityCode,
-      this._cardExpiration,
-      this._creditLimit,
-      this.getAccount(),
-      this._duedates,
-      this._closingDates
-    );
-  }
-
   checkOutstandingBalance(): number {
-    let totalBalance = this._outstandingBalance;
-    for (const transaction of this._transactions) {
-      totalBalance += transaction.getAmount();
-    }
-    return totalBalance;
+    return this._transactions.reduce((total, transaction) => total + transaction.getAmount(), this._outstandingBalance);
   }
 
   payBill(amount: number): void {
-    if (amount <= 0) {
-      throw new Error("Valor inválido para pagamento.");
-    }
+    this.validatePositiveAmount(amount);
     if (amount > this._outstandingBalance) {
       throw new Error("Valor excede o saldo devedor.");
     }
@@ -104,21 +85,26 @@ export class CreditCard extends Credit {
 
   getInvoice(month: number, year: number): Transaction[] {
     const invoiceTransactions: Transaction[] = [];
-    for (let i = 0; i < this._closingDates.length; i++) {
-      const closingDate = this._closingDates[i];
-      if (closingDate.getMonth() === month && closingDate.getFullYear() === year) {
-        for (const transaction of this._transactions) {
-          if (transaction.getDate().getMonth() === month && transaction.getDate().getFullYear() === year) {
-            invoiceTransactions.push(transaction);
-          }
+    const closingDate = this._closingDates.find(date => date.getMonth() === month && date.getFullYear() === year);
+
+    if (closingDate) {
+      this._transactions.forEach(transaction => {
+        if (transaction.getDate().getMonth() === month && transaction.getDate().getFullYear() === year) {
+          invoiceTransactions.push(transaction);
         }
-        break;
-      }
+      });
     }
+
     return invoiceTransactions;
   }
 
   getCardHistory(): Transaction[] {
     return this._transactions;
+  }
+
+  private validatePositiveAmount(amount: number): void {
+    if (amount <= 0) {
+      throw new Error("Valor inválido.");
+    }
   }
 }

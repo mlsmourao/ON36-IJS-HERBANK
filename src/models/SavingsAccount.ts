@@ -20,20 +20,22 @@ export class SavingsAccount extends Account {
   }
 
   deposit(amount: number): void {
-    if (amount <= 0) {
-      throw new Error("O valor do depósito deve ser positivo.");
-    }
+    this.validatePositiveAmount(amount, 'depósito');
     this.updateBalance(amount);
   }
 
   withdraw(amount: number): void {
-    if (amount <= 0) {
-      throw new Error("O valor do saque deve ser positivo.");
-    }
+    this.validatePositiveAmount(amount, 'saque');
     if (amount > this.getBalance()) {
       throw new Error("Saldo insuficiente para saque.");
     }
     this.updateBalance(-amount);
+  }
+
+  private validatePositiveAmount(amount: number, operation: string): void {
+    if (amount <= 0) {
+      throw new Error(`O valor do ${operation} deve ser positivo.`);
+    }
   }
 
   getStatement(): Transaction[] {
@@ -43,5 +45,4 @@ export class SavingsAccount extends Account {
   static openAccount(id: number, accountNumber: string, balance: number, interestRate: number, yieldAmount: number): SavingsAccount {
     return new SavingsAccount(id, accountNumber, balance, interestRate, yieldAmount);
   }
-
 }

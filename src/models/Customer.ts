@@ -77,26 +77,35 @@ export class Customer {
   }
 
   newCustomer(): void {
-    console.log(`Adicionando novo cliente: ${this._fullName}`);
-    this._manager.getCustomers().push(this);
+    if (this._manager) {
+      console.log(`Adicionando novo cliente: ${this._fullName}`);
+      this._manager.manageCustomer(this);
+    } else {
+      throw new Error("Nenhum gerente associado para adicionar o cliente.");
+    }
   }
 
-  // updateCustomer(updatedDetails: Partial<Customer>): void {
-  //   console.log(`Atualizando informações do cliente: ${this._fullName}`);
-  //   if (updatedDetails.getName !== undefined) this._fullName = updatedDetails.getName();
-  //   if (updatedDetails.getBirthDate !== undefined) this._birthDate = updatedDetails.getBirthDate();
-  //   if (updatedDetails.getCpf !== undefined) this._cpf = updatedDetails.getCpf();
-  //   if (updatedDetails.getAddress !== undefined) this._address = updatedDetails.getAddress();
-  //   if (updatedDetails.getPhoneNumbers !== undefined) this._phoneNumbers = updatedDetails.getPhoneNumbers();
-  //   if (updatedDetails.getEmail !== undefined) this._email = updatedDetails.getEmail();
-  //   if (updatedDetails.getCreditHistory !== undefined) this._creditHistory = updatedDetails.getCreditHistory();
-  //   if (updatedDetails.getAccounts !== undefined) this._accounts = updatedDetails.getAccounts();
-  //   if (updatedDetails.getManager !== undefined) this._manager = updatedDetails.getManager();
-  // }
+  updateCustomer(updatedDetails: Partial<{
+    fullName: string;
+    birthDate: Date;
+    cpf: string;
+    address: string;
+    phoneNumbers: string[];
+    email: string;
+    creditHistory: Credit[];
+    accounts: Account[];
+    manager: Manager;
+  }>): void {
+    console.log(`Atualizando informações do cliente: ${this._fullName}`);
 
-  getCreditHistoryMethod(): Credit[] {
-    return this._creditHistory;
+    if (updatedDetails.fullName !== undefined) this._fullName = updatedDetails.fullName;
+    if (updatedDetails.birthDate !== undefined) this._birthDate = updatedDetails.birthDate;
+    if (updatedDetails.cpf !== undefined) this._cpf = updatedDetails.cpf;
+    if (updatedDetails.address !== undefined) this._address = updatedDetails.address;
+    if (updatedDetails.phoneNumbers !== undefined) this._phoneNumbers = updatedDetails.phoneNumbers;
+    if (updatedDetails.email !== undefined) this._email = updatedDetails.email;
+    if (updatedDetails.creditHistory !== undefined) this._creditHistory = updatedDetails.creditHistory;
+    if (updatedDetails.accounts !== undefined) this._accounts = updatedDetails.accounts;
+    if (updatedDetails.manager !== undefined) this._manager = updatedDetails.manager;
   }
 }
-
-

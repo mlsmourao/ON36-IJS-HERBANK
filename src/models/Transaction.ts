@@ -13,6 +13,7 @@ export class Transaction {
     this.status = status;
   }
 
+  // Getters
   getId(): string {
     return this.id;
   }
@@ -33,13 +34,7 @@ export class Transaction {
     return this.status;
   }
 
-  getTransactionData(): {
-    id: string;
-    type: string;
-    amount: number;
-    date: Date;
-    status: string;
-  } {
+  getTransactionData(): TransactionData {
     return {
       id: this.id,
       type: this.type,
@@ -49,3 +44,11 @@ export class Transaction {
     };
   }
 }
+
+type TransactionData = {
+  id: string;
+  type: string;
+  amount: number;
+  date: Date;
+  status: string;
+};

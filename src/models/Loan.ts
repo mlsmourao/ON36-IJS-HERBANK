@@ -31,28 +31,19 @@ export class Loan extends Credit {
     this._installments = installments;
     this._status = status;
     this._installmentTransactions = installmentTransactions;
-    this._installmentStatus = new Array(installments).fill("pending"); 
+    this._installmentStatus = new Array(installments).fill("pending");
   }
 
-  
   payInstallment(installmentIndex: number, amount: number): void {
-    if (installmentIndex < 0 || installmentIndex >= this._installments) {
-      throw new Error("Índice de parcela inválido.");
-    }
+    this.validateInstallmentIndex(installmentIndex);
+    this.validatePayment(amount);
 
     if (this._installmentStatus[installmentIndex] === "paid") {
       throw new Error("Esta parcela já foi paga.");
     }
 
-    if (amount <= 0) {
-      throw new Error("Valor inválido para pagamento.");
-    }
-    if (amount > this.getRemainingAmount()) {
-      throw new Error("Valor excede o saldo devedor.");
-    }
-
     this._installmentStatus[installmentIndex] = "paid";
-    this._amount -= amount; 
+    this._amount -= amount;
 
     console.log(`Pagamento da parcela ${installmentIndex + 1} realizado com sucesso.`);
   }
@@ -66,33 +57,24 @@ export class Loan extends Credit {
   }
 
   checkOutstandingBalance(): number {
-    let totalPaidAmount = 0;
-    for (const transaction of this._installmentTransactions) {
-      if (transaction.getStatus() === "paid") {
-        totalPaidAmount += transaction.getAmount();
-      }
-    }
+    const totalPaidAmount = this._installmentTransactions
+      .filter(transaction => transaction.getStatus() === "paid")
+      .reduce((sum, transaction) => sum + transaction.getAmount(), 0);
+
     return this._amount - totalPaidAmount;
   }
 
   getInvoice(month: number, year: number): Transaction[] {
-    const invoiceTransactions: Transaction[] = [];
-    for (const transaction of this._installmentTransactions) {
-      if (
-        transaction.getDate().getMonth() === month &&
-        transaction.getDate().getFullYear() === year
-      ) {
-        invoiceTransactions.push(transaction);
-      }
-    }
-    return invoiceTransactions;
+    return this._installmentTransactions.filter(transaction =>
+      transaction.getDate().getMonth() === month &&
+      transaction.getDate().getFullYear() === year
+    );
   }
 
   getCreditHistory(): Transaction[] {
     return this._installmentTransactions;
   }
 
-  
   requestCredit(): void {
     console.log("Solicitação de crédito realizada.");
   }
@@ -127,5 +109,20 @@ export class Loan extends Credit {
 
   getStatus(): string {
     return this._status;
+  }
+
+  private validateInstallmentIndex(index: number): void {
+    if (index < 0 || index >= this._installments) {
+      throw new Error("Índice de parcela inválido.");
+    }
+  }
+
+  private validatePayment(amount: number): void {
+    if (amount <= 0) {
+      throw new Error("Valor inválido para pagamento.");
+    }
+    if (amount > this.getRemainingAmount()) {
+      throw new Error("Valor excede o saldo devedor.");
+    }
   }
 }
