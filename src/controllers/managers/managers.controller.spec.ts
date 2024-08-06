@@ -5,7 +5,7 @@ import { CreateManagerDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { NotFoundException } from '@nestjs/common';
 
-describe('ManagersController', () => {
+describe('Testing ManagersController', () => {
   let controller: ManagersController;
   let service: ManagersService;
 
