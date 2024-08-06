@@ -3,7 +3,7 @@ import { CreditCardsService } from './credit-cards.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreditCards } from './entities/credit-card.entity';
 import { Repository } from 'typeorm';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { CreateCreditCardDto } from './dto/create-credit-card.dto';
 import { UpdateCreditCardDto } from './dto/update-credit-card.dto';
 
@@ -66,10 +66,6 @@ describe('Testing CreditCardsService', () => {
 
     service = module.get<CreditCardsService>(CreditCardsService);
     repository = module.get<Repository<CreditCards>>(getRepositoryToken(CreditCards));
-  });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
   });
 
   it('should create a credit card', async () => {

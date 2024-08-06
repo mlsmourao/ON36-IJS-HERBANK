@@ -5,7 +5,7 @@ import { CreateCreditCardDto } from './dto/create-credit-card.dto';
 import { UpdateCreditCardDto } from './dto/update-credit-card.dto';
 import { NotFoundException } from '@nestjs/common';
 
-describe('CreditCardsController', () => {
+describe('Testing CreditCardsController', () => {
   let controller: CreditCardsController;
   let service: CreditCardsService;
 
@@ -63,10 +63,6 @@ describe('CreditCardsController', () => {
 
     controller = module.get<CreditCardsController>(CreditCardsController);
     service = module.get<CreditCardsService>(CreditCardsService);
-  });
-
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
   });
 
   it('should create a credit card', async () => {

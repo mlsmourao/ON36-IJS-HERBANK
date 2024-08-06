@@ -5,7 +5,7 @@ import { CheckingAccountsService } from './checking-accounts.service';
 import { CreateCheckingAccountDto } from './dto/create-checking-account.dto';
 import { UpdateCheckingAccountDto } from './dto/update-checking-account.dto';
 
-describe('CheckingAccountsController', () => {
+describe('Testing CheckingAccountsController', () => {
   let controller: CheckingAccountsController;
   let service: CheckingAccountsService;
 

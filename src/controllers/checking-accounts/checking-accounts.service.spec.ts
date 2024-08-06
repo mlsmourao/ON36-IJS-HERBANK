@@ -7,7 +7,7 @@ import { CheckingAccount } from './entities/checking-account.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 
-describe('CheckingAccountsService', () => {
+describe('Testing CheckingAccountsService', () => {
   let service: CheckingAccountsService;
   let repository: Repository<CheckingAccount>;
 
