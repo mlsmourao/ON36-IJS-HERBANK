@@ -24,6 +24,9 @@ export class Customer {
   email: string;
 
   @Column("simple-array")
+  creditHistory: string[];
+
+  @Column("simple-array")
   accounts: string[];
 
   @Column()

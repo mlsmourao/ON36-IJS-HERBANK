@@ -20,6 +20,9 @@ export class CreateCustomerDto {
   email: string;
 
   @IsArray()
+  creditHistory: string[];
+
+  @IsArray()
   accounts: string[];
 
   @IsNumber()
