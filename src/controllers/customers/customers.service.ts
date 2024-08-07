@@ -29,9 +29,6 @@ export class CustomersService {
   
   async findAll() {
     const customers = await this.repository.find();
-    if (customers.length === 0) {
-      throw new NotFoundException('No customers found');
-    }
     return customers;
   }
 
