@@ -1,22 +1,35 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreditsService } from './credits.service';
-import { Repository } from 'typeorm';
-import { Credit } from './entities/credit.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Credit } from './entities/credit.entity';
+import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
+import { CreateCreditDto } from './dto/create-credit.dto';
+import { UpdateCreditDto } from './dto/update-credit.dto';
 
-describe('Testing CreditsService', () => {
+describe('Testing CreditCardsService', () => {
   let service: CreditsService;
   let repository: Repository<Credit>;
 
-  const mockCredit = { id: 1, accountId: 123 };
-  const mockRepository = {
-    create: jest.fn(dto => ({ id: Date.now(), ...dto })),
-    save: jest.fn(credit => Promise.resolve(credit)),
-    find: jest.fn(() => Promise.resolve([mockCredit])),
-    findOne: jest.fn(id => Promise.resolve(id === 1 ? mockCredit : null)),
-    merge: jest.fn((credit, dto) => Object.assign(credit, dto)),
-    remove: jest.fn(credit => Promise.resolve(credit)),
+  const mockCreditsRepository = {
+    create: jest.fn().mockImplementation(dto => dto),
+    save: jest.fn().mockImplementation(credit => ({
+      id: Date.now(),
+      ...credit,
+    })),
+    find: jest.fn().mockResolvedValue([]),
+    findOne: jest.fn().mockImplementation(({ where: { id } }) => {
+      if (id === 1) {
+        return { id, 
+                 accountId : 123 };
+                }
+                return null;
+              }),
+    merge: jest.fn().mockImplementation((credit, dto) => ({
+      ...credit,
+      ...dto,
+    })),
+    remove: jest.fn().mockImplementation(credit => credit),
   };
 
   beforeEach(async () => {
@@ -25,7 +38,7 @@ describe('Testing CreditsService', () => {
         CreditsService,
         {
           provide: getRepositoryToken(Credit),
-          useValue: mockRepository,
+          useValue: mockCreditsRepository,
         },
       ],
     }).compile();
@@ -35,50 +48,72 @@ describe('Testing CreditsService', () => {
   });
 
   it('should create a credit', async () => {
-    const createCreditDto = { accountId: 123 };
+    const createCreditDto: CreateCreditDto = {
+      accountId : 123
+    };
     const result = await service.create(createCreditDto);
-    expect(result).toEqual({ id: expect.any(Number), ...createCreditDto });
+    expect(result).toEqual({
+      id: expect.any(Number),
+      ...createCreditDto,
+    });
     expect(repository.create).toHaveBeenCalledWith(createCreditDto);
-    expect(repository.save).toHaveBeenCalledWith(result);
+    expect(repository.save).toHaveBeenCalledWith(createCreditDto);
   });
 
-  it('should find all credits', async () => {
+  it('should return all credits', async () => {
     const result = await service.findAll();
-    expect(result).toEqual([mockCredit]);
+    expect(result).toEqual([]);
     expect(repository.find).toHaveBeenCalled();
   });
 
-  // it('should find a credit by ID', async () => {
-  //   const result = await service.findOne(1);
-  //   expect(result).toEqual(mockCredit);
-  //   expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  // });
+  it('should return a specific credit by ID', async () => {
+    const result = await service.findOne(1);
+    expect(result).toEqual({
+      id: 1,
+      accountId : 123
+    });
+    expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+  });
 
   it('should throw NotFoundException if credit not found by ID', async () => {
     await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
   });
 
-  // it('should update a credit by ID', async () => {
-  //   const updateCreditDto = { accountId: 456 };
-  //   const result = await service.update(1, updateCreditDto);
-  //   expect(result).toEqual({ id: 1, ...updateCreditDto });
-  //   expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  //   expect(repository.merge).toHaveBeenCalledWith(mockCredit, updateCreditDto);
-  //   expect(repository.save).toHaveBeenCalledWith(result);
-  // });
+  it('should update a specific credit by ID', async () => {
+    const updateCreditDto: UpdateCreditDto = {
+      accountId : 123
+    };
+    const result = await service.update(1, updateCreditDto);
+
+    const expectedResult = {
+      id: 1,
+      accountId : 123,
+      ...updateCreditDto,
+    };
+  
+    expect(result).toEqual(expectedResult);
+    expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+    expect(repository.save).toHaveBeenCalled();
+  });
+  
 
   it('should throw NotFoundException if credit to update not found', async () => {
-    const updateCreditDto = { accountId: 456 };
+    const updateCreditDto: UpdateCreditDto = {
+      accountId : 123
+    };
     await expect(service.update(999, updateCreditDto)).rejects.toThrow(NotFoundException);
   });
 
-  // it('should remove a credit by ID', async () => {
-  //   await service.remove(1);
-  //   expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  //   expect(repository.remove).toHaveBeenCalledWith(mockCredit);
-  // });
+  it('should delete a specific credit by ID', async () => {
+    await service.remove(1);
+    expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+    expect(repository.remove).toHaveBeenCalledWith({
+      id: 1,
+      accountId : 123
+    });
+  });
 
-  it('should throw NotFoundException if credit to remove not found', async () => {
+  it('should throw NotFoundException if credit to delete not found', async () => {
     await expect(service.remove(999)).rejects.toThrow(NotFoundException);
   });
 });

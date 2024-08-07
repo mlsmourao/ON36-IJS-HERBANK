@@ -29,9 +29,6 @@ export class CreditsService {
   
   async findAll() {
     const credits = await this.repository.find();
-    if (credits.length === 0) {
-      throw new NotFoundException('No credits found');
-    }
     return credits;
   }
 
