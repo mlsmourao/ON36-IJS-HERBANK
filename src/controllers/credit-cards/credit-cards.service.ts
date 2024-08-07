@@ -29,9 +29,6 @@ export class CreditCardsService {
   
   async findAll() {
     const credit_cards = await this.repository.find();
-    if (credit_cards.length === 0) {
-      throw new NotFoundException('No credit cards found');
-    }
     return credit_cards;
   }
 
@@ -52,8 +49,8 @@ export class CreditCardsService {
     if (!credit_card) {
       throw new NotFoundException(`CreditCard with ID ${id} not found`);
     }
-    this.repository.merge(credit_card, dto);
-    return this.repository.save(credit_card);
+    const updatedCreditCard = { ...credit_card, ...dto };
+    return await this.repository.save(updatedCreditCard);
   }
 
   async remove(id: number) {
