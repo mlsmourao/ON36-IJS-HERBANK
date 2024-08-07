@@ -29,9 +29,6 @@ export class ManagersService {
   
   async findAll() {
     const managers = await this.repository.find();
-    if (managers.length === 0) {
-      throw new NotFoundException('No managers found');
-    }
     return managers;
   }
 

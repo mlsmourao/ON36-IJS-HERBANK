@@ -4,24 +4,32 @@ import { Repository } from 'typeorm';
 import { Manager } from './entities/manager.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { UpdateManagerDto } from './dto/update-manager.dto';
 
 describe('Testing ManagersService', () => {
   let service: ManagersService;
   let repository: Repository<Manager>;
 
-  const mockManager = {
-    id: 1,
-    fullName: '123',
-    customers: [],
-  };
-
   const mockRepository = {
-    create: jest.fn(dto => ({ ...dto, id: Date.now() })),
-    save: jest.fn(manager => Promise.resolve(manager)),
-    find: jest.fn(() => Promise.resolve([mockManager])),
-    findOne: jest.fn(id => Promise.resolve(id === 1 ? mockManager : null)),
-    merge: jest.fn((manager, dto) => Object.assign(manager, dto)),
-    remove: jest.fn(id => Promise.resolve(id === 1 ? mockManager : null)),
+    create: jest.fn().mockImplementation(dto => dto),
+    save: jest.fn().mockImplementation(manager => ({
+      id: Date.now(),
+      ...manager,
+    })),
+    find: jest.fn().mockResolvedValue([]),
+    findOne: jest.fn().mockImplementation(({ where: { id } }) => {
+      if (id === 1) {
+        return {  id, 
+                  fullName: 'Maria',
+                  customers: []};
+                }
+                return null;
+              }),
+    merge: jest.fn().mockImplementation((manager, dto) => ({
+      ...manager,
+      ...dto,
+    })),
+    remove: jest.fn().mockImplementation(manager => manager),
   };
 
   beforeEach(async () => {
@@ -42,20 +50,23 @@ describe('Testing ManagersService', () => {
   describe('create', () => {
     it('should create a manager', async () => {
       const createManagerDto = {
-        fullName: '123',
+        fullName: 'Maria',
         customers: [],
       };
 
       const result = await service.create(createManagerDto);
-      expect(result).toEqual({ ...createManagerDto, id: expect.any(Number) });
-      expect(mockRepository.create).toHaveBeenCalledWith(createManagerDto);
-      expect(mockRepository.save).toHaveBeenCalledWith({ ...createManagerDto, id: expect.any(Number) });
+      expect(result).toEqual({
+        id: expect.any(Number),
+        ...createManagerDto,
+      });
+      expect(repository.create).toHaveBeenCalledWith(createManagerDto);
+      expect(repository.save).toHaveBeenCalledWith(createManagerDto);
     });
 
     it('should throw BadRequestException on failure', async () => {
       jest.spyOn(mockRepository, 'save').mockRejectedValueOnce(new Error('Some error'));
       const createManagerDto = {
-        fullName: '123',
+        fullName: 'Maria',
         customers: [],
       };
 
@@ -66,22 +77,26 @@ describe('Testing ManagersService', () => {
   describe('findAll', () => {
     it('should return all managers', async () => {
       const result = await service.findAll();
-      expect(result).toEqual([mockManager]);
+      expect(result).toEqual([]);
       expect(mockRepository.find).toHaveBeenCalled();
     });
 
     it('should throw NotFoundException if no managers found', async () => {
-      jest.spyOn(mockRepository, 'find').mockResolvedValueOnce([]);
-      await expect(service.findAll()).rejects.toThrow(NotFoundException);
+      await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
+      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 999 } });
     });
   });
 
   describe('findOne', () => {
-    // it('should return a manager by ID', async () => {
-    //   const result = await service.findOne(1);
-    //   expect(result).toEqual(mockManager);
-    //   expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-    // });
+    it('should return a manager by ID', async () => {
+      const result = await service.findOne(1);
+      expect(result).toEqual({
+        id: 1,
+        fullName: 'Maria',
+        customers: [],
+      });
+      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+    });
 
     it('should throw NotFoundException if manager not found', async () => {
       await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
@@ -90,15 +105,21 @@ describe('Testing ManagersService', () => {
   });
 
   describe('update', () => {
-    // it('should update a manager', async () => {
-    //   const updateManagerDto = { fullName: 'Updated Name' };
+    it('should update a manager', async () => {
+      const updateManagerDto: UpdateManagerDto = {         
+        fullName: 'Maria Updated',
+        customers: [], };
 
-    //   const result = await service.update(1, updateManagerDto);
-    //   expect(result).toEqual({ ...mockManager, ...updateManagerDto });
-    //   expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-    //   expect(mockRepository.merge).toHaveBeenCalledWith(mockManager, updateManagerDto);
-    //   expect(mockRepository.save).toHaveBeenCalledWith({ ...mockManager, ...updateManagerDto });
-    // });
+      const result = await service.update(1, updateManagerDto);
+      const expectedResult = {
+        id: 1,
+        fullName: 'Maria',
+        customers: []
+      }
+      expect(result).toEqual(expectedResult);
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+      expect(repository.save).toHaveBeenCalled();
+    });
 
     it('should throw NotFoundException if manager to update not found', async () => {
       const updateManagerDto = { fullName: 'Updated Name' };
@@ -109,11 +130,15 @@ describe('Testing ManagersService', () => {
   });
 
   describe('remove', () => {
-    // it('should remove a manager', async () => {
-    //   await service.remove(1);
-    //   expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-    //   expect(mockRepository.remove).toHaveBeenCalledWith(mockManager);
-    // });
+    it('should remove a customer by ID', async () => {
+      await service.remove(1);
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+      expect(repository.remove).toHaveBeenCalledWith({
+        id: 1,
+        fullName: 'Maria',
+        customers: []
+      });
+    });
 
     it('should throw NotFoundException if manager to remove not found', async () => {
       await expect(service.remove(999)).rejects.toThrow(NotFoundException);

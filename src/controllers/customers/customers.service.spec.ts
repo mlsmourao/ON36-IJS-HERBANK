@@ -142,7 +142,7 @@ describe('Testing CustomersService', () => {
   });
 
   it('should remove a customer by ID', async () => {
-    const result = await service.remove(1);
+    await service.remove(1);
     expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
     expect(repository.remove).toHaveBeenCalledWith({
       id: 1,
