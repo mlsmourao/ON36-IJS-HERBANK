@@ -25,17 +25,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-# Testes
+# Testes Unitários
+
+- Ferramenta utilizada: **Jest**
 
 ```bash
 # testes unitários
-$ npm run test
+$ npm test
 
-# testes end-to-end
-$ npm run test:e2e
-
-# cobertura de testes
-$ npm run test:cov
 ```
 
 # Testando as Mudanças
