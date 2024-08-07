@@ -88,13 +88,13 @@ describe('Testing AccountsService', () => {
     await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
   });
 
-  // it('should update an account', async () => {
-  //   const updateAccountDto: UpdateAccountDto = { accountNumber: '456', balance: 456, transactions: [] };
-  //   const result = await service.update(1, updateAccountDto);
-  //   expect(result).toEqual({ id: 1, ...updateAccountDto });
-  //   expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  //   expect(repository.save).toHaveBeenCalled();
-  // });
+  it('should update an account', async () => {
+    const updateAccountDto: UpdateAccountDto = { accountNumber: '456', balance: 456, transactions: [] };
+    const result = await service.update(1, updateAccountDto);
+    expect(result).toEqual({ id: 1, ...updateAccountDto });
+    expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+    expect(repository.save).toHaveBeenCalled();
+  });
 
   it('should throw NotFoundException if account to update not found', async () => {
     await expect(service.update(999, { accountNumber: '456', balance: 456, transactions: [] })).rejects.toThrow(NotFoundException);

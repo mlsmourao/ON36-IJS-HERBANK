@@ -46,15 +46,12 @@ export class AccountsService {
   }
 
   async update(id: number, dto: UpdateAccountDto) {
-    const account = await this.repository.findOne({
-      where: { id: id }
-    });
+    const account = await this.repository.findOne({ where: { id } });
     if (!account) {
       throw new NotFoundException(`Account with ID ${id} not found`);
     }
-    this.repository.merge(account, dto);
-    return this.repository.save(account);
-  }
+    return await this.repository.save({ ...account, ...dto });
+  } 
 
   async remove(id: number) {
     const account = await this.repository.findOne({
