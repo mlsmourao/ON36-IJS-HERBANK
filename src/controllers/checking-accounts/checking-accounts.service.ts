@@ -29,11 +29,9 @@ export class CheckingAccountsService {
   
   async findAll() {
     const checking_accounts = await this.repository.find();
-    if (checking_accounts.length === 0) {
-      throw new NotFoundException('No checking-accounts found');
-    }
     return checking_accounts;
   }
+  
 
   async findOne(id: number) {
     const checking_account = await this.repository.findOne({
@@ -46,15 +44,13 @@ export class CheckingAccountsService {
   }
 
   async update(id: number, dto: UpdateCheckingAccountDto) {
-    const checking_account = await this.repository.findOne({
-      where: { id: id }
-    });
+    const checking_account = await this.repository.findOne({ where: { id } });
     if (!checking_account) {
       throw new NotFoundException(`CheckingAccount with ID ${id} not found`);
     }
-    this.repository.merge(checking_account, dto);
-    return this.repository.save(checking_account);
-  }
+    const updatedAccount = { ...checking_account, ...dto };
+    return await this.repository.save(updatedAccount);
+  } 
 
   async remove(id: number) {
     const checking_account = await this.repository.findOne({
