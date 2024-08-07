@@ -1,0 +1,32 @@
+### List Checking Accounts
+
+GET http://localhost:3000/checking_accounts
+
+### Get Developer
+
+GET http://localhost:3000/checking_accounts/1
+
+### Create Developer
+
+POST http://localhost:3000/checking_accounts
+Content-Type: application/json
+
+{
+
+  "accountId": 123,
+  "overdraftLimit": 123
+}
+
+### Update Developer
+
+PATCH http://localhost:3000/checking_accounts/1
+Content-Type: application/json
+
+{
+    "accountId": 12345
+}
+
+
+### Delete Developer
+
+DELETE http://localhost:3000/checking_accounts/1

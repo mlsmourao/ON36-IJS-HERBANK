@@ -1,0 +1,38 @@
+### List Loans
+
+GET http://localhost:3000/loans
+
+### Get Loan
+
+GET http://localhost:3000/loans/1
+
+### Create Loan
+
+POST http://localhost:3000/loans
+Content-Type: application/json
+
+{
+  "creditId": 1, 
+  "amount": 123,
+  "interest": 123,
+  "approvalDate": "dez/2022" ,
+  "dueDates": [],
+  "installments": 123,
+  "status": "approved",
+  "installmentTransactions": [],
+  "installmentStatus": []
+}
+
+### Update Loan
+
+PATCH http://localhost:3000/loans/1
+Content-Type: application/json
+
+{
+    "balance":1234
+}
+
+
+### Delete Loan
+
+DELETE http://localhost:3000/loans/1

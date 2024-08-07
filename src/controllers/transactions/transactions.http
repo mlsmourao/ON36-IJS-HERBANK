@@ -1,0 +1,33 @@
+### List Transactions
+
+GET http://localhost:3000/transactions
+
+### Get Transaction
+
+GET http://localhost:3000/transactions/t_SPiOGXmxypQdCnOjhKILy
+
+### Create Transaction
+
+POST http://localhost:3000/transactions
+Content-Type: application/json
+
+{
+    "type": "TED",
+    "amount": 1223,
+    "date": "1997-03-07",
+    "status": "Complete"
+}
+
+### Update Transaction
+
+PATCH http://localhost:3000/transactions/t_SPiOGXmxypQdCnOjhKILy
+Content-Type: application/json
+
+{
+    "status": "Failed"
+}
+
+
+### Delete Transaction
+
+DELETE http://localhost:3000/transactions/t_SPiOGXmxypQdCnOjhKILy
