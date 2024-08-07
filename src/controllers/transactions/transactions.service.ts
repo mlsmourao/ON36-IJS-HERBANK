@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { Repository } from 'typeorm';
@@ -17,24 +17,39 @@ export class TransactionsService {
     return this.repository.save(transactions);
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll() {
+    const transaction = await this.repository.find();
+    return transaction;
   }
 
-  findOne(id: string) {
-    return this.repository.findOneBy({ id });
+  async findOne(id: string) {
+    const transaction = await this.repository.findOne({
+      where: { id: id }
+    });
+    if (!transaction) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
+    return transaction;
   }
 
   async update(id: string, dto: UpdateTransactionDto) {
-    const transactions = await this.repository.findOneBy({ id });
-    if(!transactions) return null;
+    const transactions = await this.repository.findOne({
+      where: { id: id }
+    });
+    if (!transactions) {
+      throw new NotFoundException(`Loan with ID ${id} not found`);
+    }
     this.repository.merge(transactions, dto);
     return this.repository.save(transactions);
   }
 
   async remove(id: string) {
-    const transactions = await this.repository.findOneBy({ id });
-    if(!transactions) return null;
+    const transactions = await this.repository.findOne({
+      where: { id: id }
+    });
+    if(!transactions) {
+      throw new NotFoundException(`Loan with ID ${id} not found`);
+    }
     return this.repository.remove(transactions);
   }
 }
