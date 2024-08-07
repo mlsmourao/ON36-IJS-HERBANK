@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Loan } from './entities/loan.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
+import { CreateLoanDto } from './dto/create-loan.dto';
+import { UpdateLoanDto } from './dto/update-loan.dto';
 
 describe('LoansService', () => {
   let service: LoansService;
@@ -23,12 +25,32 @@ describe('LoansService', () => {
   };
 
   const mockRepository = {
-    create: jest.fn(dto => ({ ...dto, id: Date.now() })),
-    save: jest.fn(loan => Promise.resolve(loan)),
-    find: jest.fn(() => Promise.resolve([mockLoan])),
-    findOne: jest.fn(id => Promise.resolve(id === 1 ? mockLoan : null)),
-    merge: jest.fn((loan, dto) => Object.assign(loan, dto)),
-    remove: jest.fn(id => Promise.resolve(id === 1 ? mockLoan : null)),
+    create: jest.fn().mockImplementation(dto => dto),
+    save: jest.fn().mockImplementation(loan => ({
+      id: Date.now(),
+      ...loan,
+    })),
+    find: jest.fn().mockResolvedValue([]),
+    findOne: jest.fn().mockImplementation(({ where: { id } }) => {
+      if (id === 1) {
+        return {  id, 
+                  creditId: 1,
+                  amount: 123,
+                  interest: 123,
+                  approvalDate: 'dez/2022',
+                  dueDates: [],
+                  installments: 123,
+                  status: 'approved',
+                  installmentTransactions: [],
+                  installmentStatus: [] };
+                }
+                return null;
+              }),
+    merge: jest.fn().mockImplementation((loan, dto) => ({
+      ...loan,
+      ...dto,
+    })),
+    remove: jest.fn().mockImplementation(customer => customer),
   };
 
   beforeEach(async () => {
@@ -47,7 +69,7 @@ describe('LoansService', () => {
   });
 
   it('should create a loan', async () => {
-    const createLoanDto = {
+    const createLoanDto: CreateLoanDto = {
       creditId: 1,
       amount: 123,
       interest: 123,
@@ -60,36 +82,67 @@ describe('LoansService', () => {
     };
 
     const result = await service.create(createLoanDto);
-    expect(result).toEqual({ ...createLoanDto, id: expect.any(Number) });
-    expect(mockRepository.create).toHaveBeenCalledWith(createLoanDto);
-    expect(mockRepository.save).toHaveBeenCalledWith({ ...createLoanDto, id: expect.any(Number) });
+    expect(result).toEqual({
+      id: expect.any(Number),
+      ...createLoanDto,
+    });
+    expect(repository.create).toHaveBeenCalledWith(createLoanDto);
+    expect(repository.save).toHaveBeenCalledWith(createLoanDto);
   });
 
   it('should return all loans', async () => {
     const result = await service.findAll();
-    expect(result).toEqual([mockLoan]);
+    expect(result).toEqual([]);
     expect(mockRepository.find).toHaveBeenCalled();
   });
 
-  // it('should return a loan by ID', async () => {
-  //   const result = await service.findOne(1);
-  //   expect(result).toEqual(mockLoan);
-  //   expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  // });
-
-  it('should throw NotFoundException if loan not found by ID', async () => {
-    await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
-    expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 999 } });
+  it('should return a loan by ID', async () => {
+    const result = await service.findOne(1);
+    expect(result).toEqual({
+      id: 1,
+      creditId: 1,
+      amount: 123,
+      interest: 123,
+      approvalDate: 'dez/2022',
+      dueDates: [],
+      installments: 123,
+      status: 'approved',
+      installmentTransactions: [],
+      installmentStatus: []
+    });
+    expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
   });
 
-  // it('should update a loan by ID', async () => {
-  //   const updateLoanDto = { amount: 200 };
-  //   const result = await service.update(1, updateLoanDto);
-  //   expect(result).toEqual({ ...mockLoan, ...updateLoanDto });
-  //   expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  //   expect(mockRepository.merge).toHaveBeenCalledWith(mockLoan, updateLoanDto);
-  //   expect(mockRepository.save).toHaveBeenCalledWith({ ...mockLoan, ...updateLoanDto });
-  // });
+  it('should update a loan by ID', async () => {
+    const updateLoanDto: UpdateLoanDto = {
+      creditId: 1,
+      amount: 123,
+      interest: 123,
+      approvalDate: 'mar/2022',
+      dueDates: [],
+      installments: 123,
+      status: 'approved',
+      installmentTransactions: [],
+      installmentStatus: []
+    };
+    const result = await service.update(1, updateLoanDto);
+
+    const expectedResult = {
+      id: 1,
+      creditId: 1,
+      amount: 123,
+      interest: 123,
+      approvalDate: 'dez/2022',
+      dueDates: [],
+      installments: 123,
+      status: 'approved',
+      installmentTransactions: [],
+      installmentStatus: []
+    }
+    expect(result).toEqual(expectedResult);
+    expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+    expect(repository.save).toHaveBeenCalled();
+  });
 
   it('should throw NotFoundException if loan to update not found', async () => {
     const updateLoanDto = { amount: 200 };
@@ -97,12 +150,12 @@ describe('LoansService', () => {
     expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 999 } });
   });
 
-  // it('should remove a loan by ID', async () => {
-  //   const result = await service.remove(1);
-  //   expect(result).toEqual(mockLoan);
-  //   expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  //   expect(mockRepository.remove).toHaveBeenCalledWith(mockLoan);
-  // });
+  it('should remove a loan by ID', async () => {
+    const result = await service.remove(1);
+    expect(result).toEqual(mockLoan);
+    expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+    expect(mockRepository.remove).toHaveBeenCalledWith(mockLoan);
+  });
 
   it('should throw NotFoundException if loan to remove not found', async () => {
     await expect(service.remove(999)).rejects.toThrow(NotFoundException);

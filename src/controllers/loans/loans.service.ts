@@ -29,9 +29,6 @@ export class LoansService {
   
   async findAll() {
     const loans = await this.repository.find();
-    if (loans.length === 0) {
-      throw new NotFoundException('No loans found');
-    }
     return loans;
   }
 
