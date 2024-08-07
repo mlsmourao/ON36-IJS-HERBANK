@@ -29,9 +29,6 @@ export class SavingsAccountsService {
   
   async findAll() {
     const savings_accounts = await this.repository.find();
-    if (savings_accounts.length === 0) {
-      throw new NotFoundException('No savings-accounts found');
-    }
     return savings_accounts;
   }
 

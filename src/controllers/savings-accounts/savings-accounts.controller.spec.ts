@@ -3,7 +3,7 @@ import { SavingsAccountsController } from './savings-accounts.controller';
 import { SavingsAccountsService } from './savings-accounts.service';
 import { CreateSavingsAccountDto } from './dto/create-savings-account.dto';
 import { UpdateSavingsAccountDto } from './dto/update-savings-account.dto';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 
 describe('Testing SavingsAccountsController', () => {
   let controller: SavingsAccountsController;
@@ -52,16 +52,6 @@ describe('Testing SavingsAccountsController', () => {
       expect(mockService.create).toHaveBeenCalledWith(createSavingsAccountDto);
     });
 
-  //   it('should throw BadRequestException on failure', async () => {
-  //     jest.spyOn(mockService, 'create').mockRejectedValueOnce(new Error('Some error'));
-  //     const createSavingsAccountDto: CreateSavingsAccountDto = {
-  //       accountId: 123,
-  //       interestRate: 123,
-  //       yieldAmount: 123,
-  //     };
-
-  //     await expect(controller.create(createSavingsAccountDto)).rejects.toThrow(BadRequestException);
-  //   });
   });
 
   describe('findAll', () => {
@@ -71,10 +61,9 @@ describe('Testing SavingsAccountsController', () => {
       expect(mockService.findAll).toHaveBeenCalled();
     });
 
-    // it('should throw NotFoundException if no savings accounts found', async () => {
-    //   jest.spyOn(mockService, 'findAll').mockResolvedValueOnce([]);
-    //   await expect(controller.findAll()).rejects.toThrow(NotFoundException);
-    // });
+    it('should throw NotFoundException if checking account not found', async () => {
+      await expect(controller.findOne(999)).rejects.toThrow(NotFoundException);
+    });
   });
 
   describe('findOne', () => {
