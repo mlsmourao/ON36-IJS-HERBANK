@@ -4,17 +4,27 @@ import { UpdateCustomerDto } from 'src/interfaces/dto/customers/update-customer.
 import { Repository } from 'typeorm';
 import { Customer } from 'src/domain/entities/customer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CorreiosApiService } from 'src/infrastructure/apis/correios-api.services';
 
 @Injectable()
 export class CustomersService {
   constructor(
     @InjectRepository(Customer)
-    private readonly repository: Repository<Customer>
+    private readonly repository: Repository<Customer>,
+    private readonly correiosApiService: CorreiosApiService
   ) {}
 
   async create(dto: CreateCustomerDto) {
     try {
       console.log('Criando cliente com DTO:', dto);
+
+      const endereco = await this.correiosApiService.consultaCep(dto.cep);
+
+      console.log('endereço encontrado :', endereco);
+      
+      if (!endereco) {
+        throw new BadRequestException('CEP inválido');
+      }
   
       const newCustomer = this.repository.create(dto);
   

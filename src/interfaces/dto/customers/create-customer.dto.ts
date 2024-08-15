@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsArray, IsDate, IsEmail } from 'class-validator';
+import { IsString, IsNumber, IsArray, IsEmail } from 'class-validator';
 
 export class CreateCustomerDto {
   @IsString()
@@ -11,7 +11,13 @@ export class CreateCustomerDto {
   cpf: string;
 
   @IsString()
+  cep: string;
+
+  @IsString()
   address: string;
+
+  @IsString()
+  complementAddress: string;
 
   @IsArray()
   phoneNumbers: string[];

@@ -15,7 +15,13 @@ export class Customer {
   cpf: string;
 
   @Column()
+  cep: string;
+
+  @Column()
   address: string;
+
+  @Column()
+  complementAddress: string;
 
   @Column("simple-array")
   phoneNumbers: string[];
