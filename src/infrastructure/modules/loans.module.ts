@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LoansService } from 'src/application/services/loans.service';
-import { LoansController } from 'src/interfaces/controllers/loans.controller';
+import { LoansService } from 'src/application/services/loans/loans.service';
+import { LoansController } from 'src/interfaces/controllers/loans/loans.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Loan } from 'src/domain/entities/loan.entity';
 

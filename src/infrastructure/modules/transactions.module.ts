@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TransactionsService } from 'src/application/services/transactions.service';
-import { TransactionsController } from 'src/interfaces/controllers/transactions.controller';
+import { TransactionsService } from 'src/application/services/transactions/transactions.service';
+import { TransactionsController } from 'src/interfaces/controllers/transactions/transactions.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transactions } from 'src/domain/entities/transaction.entity';
 

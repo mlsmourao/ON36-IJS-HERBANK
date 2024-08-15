@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CreditCardsService } from 'src/application/services/credit-cards.service';
-import { CreditCardsController } from 'src/interfaces/controllers/credit-cards.controller';
+import { CreditCardsService } from 'src/application/services/credit-cards/credit-cards.service';
+import { CreditCardsController } from 'src/interfaces/controllers/credit-cards/credit-cards.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreditCards } from 'src/domain/entities/credit-card.entity';
 
