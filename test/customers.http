@@ -31,7 +31,7 @@ PATCH http://localhost:3000/customers/1
 Content-Type: application/json
 
 {
-    "email":"teste@mail.com"
+    "cep": "25250001"
 }
 
 

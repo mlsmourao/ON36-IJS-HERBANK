@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Customer } from 'src/domain/entities/customer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CorreiosApiService } from 'src/infrastructure/apis/correios-api.services';
+import { CepConversionAdapter } from 'src/infrastructure/adapters/in/cep-conversion.adapter';
 
 @Injectable()
 export class CustomersService {
@@ -18,20 +19,24 @@ export class CustomersService {
     try {
       console.log('Criando cliente com DTO:', dto);
 
-      const endereco = await this.correiosApiService.consultaCep(dto.cep);
+      dto.cep = CepConversionAdapter.convertCepToString(dto.cep);
 
-      console.log('Endereço retornado pela API dos Correios:', endereco);
+      if (!dto.cep) {
+        dto.address = dto.address; 
+        dto.cep = null;
+      } else {
+        const endereco = await this.correiosApiService.consultaCep(dto.cep);
+        console.log('Endereço encontrado:', endereco);
 
-      if (!endereco) {
-        throw new BadRequestException('CEP inválido');
+        if (!endereco) {
+          dto.cep = null; 
+        } else {
+          dto.address = endereco; 
+        }
       }
 
-      dto.address = endereco;
-
-      console.log('DTO após atualização do endereço:', dto);
-
       const newCustomer = this.repository.create(dto);
-  
+
       console.log('Novo cliente a ser salvo:', newCustomer);
 
       return await this.repository.save(newCustomer);
@@ -60,9 +65,26 @@ export class CustomersService {
     const customer = await this.repository.findOne({
       where: { id: id }
     });
+
     if (!customer) {
       throw new NotFoundException(`Customer with ID ${id} not found`);
     }
+
+    dto.cep = CepConversionAdapter.convertCepToString(dto.cep);
+
+    if (!dto.cep) {
+      dto.cep = null; 
+    } else {
+      const endereco = await this.correiosApiService.consultaCep(dto.cep);
+      console.log('Endereço encontrado:', endereco);
+
+      if (!endereco) {
+        dto.cep = null;
+      } else {
+        dto.address = endereco;
+      }
+    }
+
     this.repository.merge(customer, dto);
     return this.repository.save(customer);
   }
