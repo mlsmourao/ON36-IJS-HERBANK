@@ -15,7 +15,7 @@ Content-Type: application/json
   "fullName": "Maria",
   "birthDate": "",
   "cpf": "12345678900",
-  "cep": "",
+  "cep": "25250010",
   "address": "Rua Maia de Lacerda",
   "complementAddress": "91 apt 207",
   "phoneNumbers": [],

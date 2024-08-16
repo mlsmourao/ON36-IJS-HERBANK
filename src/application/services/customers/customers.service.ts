@@ -20,12 +20,16 @@ export class CustomersService {
 
       const endereco = await this.correiosApiService.consultaCep(dto.cep);
 
-      console.log('endereço encontrado :', endereco);
-      
+      console.log('Endereço retornado pela API dos Correios:', endereco);
+
       if (!endereco) {
         throw new BadRequestException('CEP inválido');
       }
-  
+
+      dto.address = endereco;
+
+      console.log('DTO após atualização do endereço:', dto);
+
       const newCustomer = this.repository.create(dto);
   
       console.log('Novo cliente a ser salvo:', newCustomer);
