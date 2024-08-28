@@ -122,7 +122,7 @@ Nest é licenciado pelo MIT.
 # Desenvolvimento da API
 
 - Autor: Maria Luiza Mourão
-- Linkedin: [Maria Luiza Mourão] (https://www.linkedin.com/in/maria-luiza-silva-mour%C3%A3o/)
+- Linkedin: [Maria Luiza Mourão](https://www.linkedin.com/in/maria-luiza-silva-mour%C3%A3o/)
 
 
 
