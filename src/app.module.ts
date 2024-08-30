@@ -15,10 +15,14 @@ import { LoansModule } from 'src/infrastructure/modules/loans.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Não utilizar em prod
+      type: 'postgres',
+      host: 'aws-0-sa-east-1.pooler.supabase.com',
+      port: 6543,
+      username:'postgres.clfcpzvnclgiomjrrrfi',
+      password:'Matheus@298439',
+      database: 'postgres',
+      autoLoadEntities: true,
+      synchronize: true,
     }), 
     AccountsModule, 
     ManagersModule, 

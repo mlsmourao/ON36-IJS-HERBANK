@@ -7,5 +7,8 @@ export class CheckingAccount {
   id: number;
 
   @Column()
+  accountId: number;
+
+  @Column()
   overdraftLimit: number;
 }
