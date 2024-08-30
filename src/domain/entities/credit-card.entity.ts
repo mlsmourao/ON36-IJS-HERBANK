@@ -1,12 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Credit } from "./credit.entity";
 
 @Entity("credit-cards")
 export class CreditCards {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  creditId: number;
 
   @Column()
   cardNumber: number;

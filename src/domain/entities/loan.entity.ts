@@ -2,12 +2,9 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("loan")
 export class Loan {
-
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  creditId: number;
 
   @Column()
   amount: number;

@@ -1,9 +1,10 @@
-import { IsString, IsNumber, IsArray } from 'class-validator';
+import { IsString, IsNumber, IsArray, IsObject } from 'class-validator';
+import { Credit } from 'src/domain/entities/credit.entity';
 
 export class CreateLoanDto {
 
     @IsNumber()
-    creditId: number;
+    creditId: number; 
 
     @IsNumber()
     amount: number;
@@ -29,4 +30,3 @@ export class CreateLoanDto {
     @IsArray()
     installmentStatus: string[];
 }
-
