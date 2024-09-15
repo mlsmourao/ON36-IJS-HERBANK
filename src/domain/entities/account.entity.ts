@@ -2,15 +2,16 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("accounts")
 export class Account {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
   accountNumber: string;
 
-  @Column()
+  @Column('float8')
   balance: number;
 
-  @Column("simple-array") 
-  transactions: string[];
+  @Column("float", { array: true }) 
+  transactions: number[];
+
 }
